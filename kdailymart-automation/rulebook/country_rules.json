@@ -6,6 +6,17 @@
     "kdailymart_자동화_파이프라인_설계서_v1.md",
     "kdailymart 운영 룰북 v2 (Day 1 실전 검증 내용)"
   ],
+  "expansion_policy": {
+    "note": "신규 Shopee 국가 상점을 열 때 지키는 순서. '카테고리 무제한'은 사업 방침일 뿐 법적 면제가 아니므로, 규제 확인이 카테고리 자유화보다 항상 선행되어야 한다.",
+    "steps": [
+      "1. 해당 국가의 규제기관 목록부터 리서치한다 (뷰티=인증기관, 식품=할랄/현지식품안전, 전자=안전인증, 펫푸드/담배 등 SG/MY 사례에 준하는 대응 기관 확인).",
+      "2. 확인된 규제를 이 파일의 countries.<COUNTRY>.restricted_categories에 SG/MY와 동일한 포맷(key/label/regulator/status/reason/action)으로 먼저 채운다.",
+      "3. restricted_categories가 비어있는(=리서치 안 된) 카테고리는 category_policy를 'unrestricted'로 선언해도 compliance-agent가 기본값 반려(unknown_regulation_unverified)로 처리한다. 즉 '카테고리 무제한'은 조사 완료 카테고리에만 적용된다.",
+      "4. 규제 확인이 끝난 카테고리부터 category_policy.unrestricted_categories에 추가한다. 이후 sourcing-agent는 그 목록 내에서 인기 상품 위주로 자유롭게 후보를 뽑는다.",
+      "5. category_master.json에 해당 카테고리ID/DTS/속성값을 채운 뒤에만 listing-agent가 Mass Upload 대상으로 취급한다."
+    ],
+    "rationale": "MY 마스크팩 사례(대량등록은 성공했으나 SG에서 Publish 불가)처럼, '올릴 수 있는지'와 '팔아도 되는지'는 별개 축이다. 카테고리를 넓히는 것은 소싱 다양성 문제이고, 반려 여부는 규제 문제이므로 순서를 바꾸면 재작업 비용이 발생한다."
+  },
   "countries": {
     "SG": {
       "market": "Shopee SG (seller.shopee.kr 크로스보더 셀러센터로 운영, seller.shopee.sg 직접 접근 불가)",
