@@ -1,0 +1,150 @@
+{
+  "$schema_note": "compliance-agent가 후보 리스트를 국가별로 대조할 때 참조하는 규제 룰북 초안. 실제 실행 연결 전까지는 사람이 검수/보강해야 하는 draft 상태입니다.",
+  "version": "v1-draft",
+  "last_updated": "2026-07-13",
+  "source_documents": [
+    "kdailymart_자동화_파이프라인_설계서_v1.md",
+    "kdailymart 운영 룰북 v2 (Day 1 실전 검증 내용)"
+  ],
+  "countries": {
+    "SG": {
+      "market": "Shopee SG (seller.shopee.kr 크로스보더 셀러센터로 운영, seller.shopee.sg 직접 접근 불가)",
+      "status": "운영중",
+      "base_currency": "KRW",
+      "fee_assumptions": {
+        "note": "margin-agent 스크리닝용 가정치. 실제 수수료는 쇼피 셀러센터 공지 기준으로 주기적 갱신 필요.",
+        "transaction_fee_pct": 2.0,
+        "commission_pct": "TODO: 카테고리별 커미션율 확인 필요 (셀러센터 공지 기준)",
+        "global_sku_price_rule": "Global SKU Price = 원가(상품원가+운영비+국내배송비)만 입력. 판매가/국제배송비를 넣으면 이중가산 발생(Day 1 실수 이력). 마진 조정은 Market Price Adjustment Rate로만 한다 (100%=마진0, 130%=마진30%)."
+      },
+      "safe_categories": [
+        {
+          "label": "패션 (의류/양말/신발)",
+          "verified": true
+        },
+        {
+          "label": "패션 액세서리 (헤어핀/가방/주얼리)",
+          "verified": true,
+          "example": "Fashion Accessories > Hair Accessories > Hair Clips & Hair Pins (Category ID 100147, 2026-07-13 LIVE 등록 검증됨)"
+        },
+        {
+          "label": "홈&리빙 (주방/수납)",
+          "verified": true
+        },
+        {
+          "label": "문구·취미",
+          "verified": true
+        },
+        {
+          "label": "일반 가공식품 (김 등 포장 스낵류)",
+          "verified": true,
+          "note": "건강기능식품/생소재 식품 등 SFA 인허가가 필요한 식품과는 구분할 것. 일반 포장 가공식품만 안전군."
+        },
+        {
+          "label": "스포츠",
+          "verified": true
+        },
+        {
+          "label": "완구",
+          "verified": true
+        }
+      ],
+      "restricted_categories": [
+        {
+          "key": "health_beauty",
+          "label": "Health & Beauty 전체 (화장품/스킨케어/마스크팩 등 뷰티 카테고리)",
+          "regulator": "HSA (Health Sciences Authority)",
+          "status": "banned_for_dropship",
+          "reason": "화장품/스킨케어 판매에는 싱가포르 법인 또는 현지대리인(Local Responsible Person, LRP)이 필요. 무재고 드랍십 구조와 양립 불가. 미등록 판매 적발 시 벌금 사례 있음(S$18,000).",
+          "action": "SG에서는 리스팅 자체를 만들지 않거나 Publish하지 않는다. Global SKU는 국가 중립이므로 MY/PH 등 판매 가능한 국가의 샵이 열리면 그쪽으로 Publish 이관.",
+          "evidence": "운영 룰북 v2 - Day 1 발견 근본 문제 ② / 등록 현황: KDM-MASK-* SKU 3종 Global SKU만 유지, SG Publish 불가"
+        },
+        {
+          "key": "pesticides_insect_repellent",
+          "label": "살충제/방충제류",
+          "regulator": "NEA (National Environment Agency)",
+          "status": "banned",
+          "reason": "NEA 등록/허가 대상 품목이라 무인가 판매 불가.",
+          "evidence": "운영 룰북 v2 - 마스터 원칙 #2, SG 소싱 시 4대 규제군 원천 배제 항목 ①"
+        },
+        {
+          "key": "electronics",
+          "label": "전자기기",
+          "regulator": "Safety Mark 인증 (IMDA/Enterprise Singapore 관할 안전인증)",
+          "status": "banned",
+          "reason": "Safety Mark 인증이 없는 전자기기는 판매 불가. 인증 취득/보유 확인 프로세스가 없는 소싱 구조에서는 원천 배제.",
+          "evidence": "운영 룰북 v2 - 마스터 원칙 #2, 4대 규제군 원천 배제 항목 ②"
+        },
+        {
+          "key": "pet_food",
+          "label": "펫푸드",
+          "regulator": "CCP (Certificate/Licence 소관, AVS 산하)",
+          "status": "banned",
+          "reason": "수입/유통 허가(CCP 등) 대상 품목이라 무인가 판매 불가.",
+          "evidence": "운영 룰북 v2 - 마스터 원칙 #2, 4대 규제군 원천 배제 항목 ④"
+        },
+        {
+          "key": "tobacco",
+          "label": "담배",
+          "regulator": "HSA / 관세청 등 복수 기관",
+          "status": "banned",
+          "reason": "판매 자체가 엄격히 규제되는 품목. 논의 여지 없이 소싱 단계에서 배제.",
+          "evidence": "운영 룰북 v2 - 마스터 원칙 #2, 4대 규제군 원천 배제 항목 ⑤"
+        }
+      ],
+      "notes": [
+        "새 카테고리로 확장할 때는 반드시 HiddenCatProps(카테고리ID), Pre-order DTS Range(허용 DTS), Attribute value mapping(속성 허용값), Template 4행(Mandatory/Conditional Mandatory) 4개 시트를 먼저 파싱한 뒤 데이터를 채운다.",
+        "이미지 없는 상품/실물 미확인 상품은 등록하지 않는다 (마스터 원칙 #4)."
+      ]
+    },
+    "MY": {
+      "market": "Shopee MY (신규 진출 검토 - 셀러센터 계정 개설 여부 미확인)",
+      "status": "런칭 준비중",
+      "base_currency": "TODO: MY 샵 개설 시 확정 (KRW 유지 여부 확인)",
+      "fee_assumptions": {
+        "note": "margin-agent MY 탭 스크리닝용 가정치. 공식 발표 기준 갱신 필요.",
+        "platform_support_fee_pct": {
+          "value": 5.0,
+          "effective_from": "2026-02-01",
+          "note": "신설된 Platform Support Fee"
+        },
+        "cross_border_commission_pct": {
+          "previous": 16.2,
+          "current": 18.36,
+          "note": "인상 이력 있음. 마진계산기에 MY 탭 별도로 반영 필요."
+        },
+        "global_sku_price_rule": "SG와 동일하게 Global SKU Price = 원가만 입력 (판매가 아님). 판매가는 Market Price Adjustment Rate로 조정."
+      },
+      "phase": "1단계: 안전 카테고리만 (패션/홈리빙/문구/스포츠/완구). '카테고리 무제한' 시작은 리스크로 판단, 보류.",
+      "safe_categories": [
+        { "label": "패션", "verified": false, "note": "SG에서 검증된 방식 재사용 예정, MY 자체 검증 필요" },
+        { "label": "홈리빙", "verified": false },
+        { "label": "문구", "verified": false },
+        { "label": "스포츠", "verified": false },
+        { "label": "완구", "verified": false }
+      ],
+      "restricted_categories": [
+        {
+          "key": "food_beverage_non_halal",
+          "label": "할랄 미인증 식음료 전체",
+          "regulator": "JAKIM (할랄 인증 기관)",
+          "status": "banned",
+          "reason": "할랄 인증이 없는 식음료 판매 금지. 한국산 가공식품 대부분이 할랄 인증 미보유 상태이므로 인증 여부를 확인하지 못한 식음료는 후보에서 원천 배제.",
+          "action": "compliance-agent는 식음료 후보에 대해 할랄 인증서(JAKIM 로고/인증번호) 확인 전까지 무조건 반려 처리."
+        },
+        {
+          "key": "cosmetics",
+          "label": "화장품",
+          "regulator": "NPRA (National Pharmaceutical Regulatory Agency)",
+          "status": "on_hold",
+          "reason": "화장품은 NPRA 등록 이슈 가능성이 있어 1단계에서는 제외. SG와 마찬가지로 뷰티 카테고리는 당분간 보류 추천.",
+          "action": "1단계 안전 카테고리(패션/홈리빙/문구/스포츠/완구)에 포함하지 않는다. NPRA 등록 요건 리서치 완료 전까지 재검토하지 않음."
+        }
+      ],
+      "notes": [
+        "MY 셀러센터 계정 개설 여부를 먼저 확정해야 한다 (설계서 0번 전제조건).",
+        "말레이어 카피는 로컬 톤 검수가 필요하다 (localization-agent 출력물 기준)."
+      ]
+    }
+  }
+}

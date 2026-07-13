@@ -1,0 +1,80 @@
+{
+  "$schema_note": "listing-agent/master-qa-agent가 카테고리ID, DTS 허용범위, 속성 허용값을 대조하는 마스터 데이터. 새 카테고리를 추가할 때는 반드시 쇼피 카테고리 템플릿의 HiddenCatProps / Pre-order DTS Range / Attribute value mapping / Template 4행 시트를 먼저 전부 파싱한 뒤 채운다 (마스터 원칙 #1). 아직 검증된 2개 카테고리만 채워진 draft 상태입니다.",
+  "version": "v1-draft",
+  "last_updated": "2026-07-13",
+  "categories": {
+    "SG": [
+      {
+        "path": "Fashion Accessories > Hair Accessories > Hair Clips & Hair Pins",
+        "category_id": 100147,
+        "verified": true,
+        "verified_on": "2026-07-13",
+        "verification_note": "대량등록 1/1 + 개별 Publish → LIVE 성공",
+        "days_to_ship": {
+          "allowed": [[1, 1], [4, 10]],
+          "banned": [2, 3],
+          "note": "DTS 2, 3은 Pre-order DTS Range 시트에서 금지값으로 확인됨"
+        },
+        "attributes": {
+          "pack_type": {
+            "column": "AE",
+            "allowed_values": ["Multipack", "Twin Pack", "Set", "Triple Pack", "Single"]
+          },
+          "gender": {
+            "column": "AF",
+            "allowed_values": ["Female", "Male", "Unisex"]
+          },
+          "region_of_origin": {
+            "column": "AG",
+            "allowed_values": ["Korea"]
+          }
+        },
+        "hsa_relevant": false,
+        "notes": ["Beauty 계열이 아니므로 HSA 무관"]
+      },
+      {
+        "path": "Beauty > Skincare > Face Mask & Packs",
+        "category_id": 100898,
+        "verified": true,
+        "verified_on": "2026-07-13",
+        "verification_note": "대량등록 3/3 성공. 단 SG는 HSA 규제로 Publish 불가 (country_rules.json restricted_categories.health_beauty 참조) → Global SKU만 유지, MY/PH 이관 대상",
+        "days_to_ship": {
+          "allowed": [[1, 1], [4, 10]],
+          "banned": [3],
+          "note": "DTS 3은 Pre-order DTS Range 시트에서 금지값으로 확인됨 (Day 1 실수 이력: 100664/DTS 3으로 잘못 등록했다가 정정)"
+        },
+        "attributes": {
+          "shelf_life": {
+            "column": "AE",
+            "mandatory": "conditional_mandatory_but_effectively_required",
+            "allowed_values": ["1 Month", "2 Months", "3 Months", "6 Months", "12 Months", "24 Months"],
+            "note": "Conditional Mandatory이지만 실질적으로 필수. 누락 시 반려됨 (Day 1 실수 이력)"
+          },
+          "mask_type": {
+            "column": "AR",
+            "allowed_values": ["Cream", "Mud", "Regular", "Others"],
+            "note": "'Sheet Mask'는 허용값에 없음 (Day 1 실수: Sheet Mask 선택 → Regular Mask로 정정)"
+          },
+          "region_of_origin": {
+            "column": "AN",
+            "allowed_values": ["Korea"],
+            "note": "'South Korea'가 아니라 'Korea'로 정확히 입력해야 함"
+          }
+        },
+        "hsa_relevant": true,
+        "notes": [
+          "SG Publish 불가. MY/PH 등 Health & Beauty 판매가 가능한 국가에서만 Publish.",
+          "성공 컬럼 세트: A(Category) B(Name) C(Description) D(Parent SKU) K(Price=원가) L(Stock) M(SKU) N(Cover Image) O~S(Item Image 1~5) Y(Weight) Z/AA/AB(치수) AC(Days to Ship) AE~(속성)"
+        ]
+      }
+    ],
+    "MY": [
+      {
+        "path": "TODO",
+        "category_id": null,
+        "verified": false,
+        "note": "MY 셀러센터 계정 개설 및 1단계 안전 카테고리(패션/홈리빙/문구/스포츠/완구) 확정 후, SG와 동일한 절차로 HiddenCatProps/DTS Range/Attribute mapping 시트를 파싱하여 채울 것."
+      }
+    ]
+  }
+}
