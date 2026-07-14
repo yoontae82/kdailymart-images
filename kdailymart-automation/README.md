@@ -2,20 +2,24 @@
 
 kdailymart SG(운영중)/MY(신규) 매장의 "매일 10개 상품 자동화" 파이프라인 스캐폴딩.
 
-## 현재 상태: 스캐폴딩만 완료, 실행 불가
+## 현재 상태: 크리덴셜 없이 되는 로직만 실구현, 실제 판매는 아직 불가
 
 이 폴더는 [`kdailymart_자동화_파이프라인_설계서_v1.md`]의 5번 섹션 구조를 그대로 코드로
-옮긴 **뼈대**입니다. 아래는 아직 되어 있지 않습니다.
+옮긴 뼈대에서 출발해, 외부 API/계정 없이도 동작 가능한 부분부터 하나씩 실구현하는 중입니다.
 
+- **실구현 완료** (외부 크리덴셜 불필요, 실제 동작함):
+  - `compliance.py` — 키워드 기반 v0 분류기로 규제 카테고리 승인/반려 판정 (`country_rules.json` 대조)
+  - `margin.py` — Adjustment Rate 공식으로 순마진 계산/재시도 (SG는 실증됨, MY는 `formula_verified=False`로
+    표시되는 보수적 추정치)
+- **아직 스텁** (`NotImplementedError`, 아래 크리덴셜/결정이 필요): `sourcing.py`, `image.py`,
+  `localization.py`, `listing.py`, `exposure.py`, `promo.py`, `distribution.py`, `cs.py`, `master_qa.py`
 - 크리덴셜/API 키 연결 (도매꾹/쿠팡/네이버, 이미지 생성, 번역, 쇼피 셀러센터, SNS 채널 등) — 전혀 없음
-- `agents/` 하위 11개 스크립트는 전부 **함수 시그니처 + docstring + TODO만 있는 스텁**이며,
-  실제 호출 시 `NotImplementedError`를 던집니다.
 - `rulebook/country_rules.json`, `rulebook/category_master.json`은 사람이 검수해야 하는 **초안(draft)**
   상태입니다 (실제 실행 전에 재검증 필요).
 - 브라우저 자동화 방식(Playwright vs 쇼피 Open API 등) 등 핵심 아키텍처 결정이 아직 내려지지 않았습니다.
 
-즉, **지금 이 저장소를 그대로 실행해도 아무 상품도 등록되지 않습니다.** 구조와 로직(각 단계가 무엇을
-입력/출력하고 무엇을 근거로 승인/반려하는지)만 정리된 상태입니다.
+즉, **지금 이 저장소를 그대로 실행해도 아무 상품도 등록되지 않습니다.** compliance/margin 두 단계는
+실제로 돌아가지만, 그 앞뒤(소싱/등록/홍보/CS)는 여전히 크리덴셜과 아키텍처 결정을 기다리는 스텁입니다.
 
 ## 폴더 구조
 
