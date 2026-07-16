@@ -2,6 +2,27 @@
   "$schema_note": "listing-agent/master-qa-agent가 카테고리ID, DTS 허용범위, 속성 허용값을 대조하는 마스터 데이터. 새 카테고리를 추가할 때는 반드시 쇼피 카테고리 템플릿의 HiddenCatProps / Pre-order DTS Range / Attribute value mapping / Template 4행 시트를 먼저 전부 파싱한 뒤 채운다 (마스터 원칙 #1). 아직 검증된 2개 카테고리만 채워진 draft 상태입니다.",
   "version": "v1-draft",
   "last_updated": "2026-07-13",
+  "fixed_columns": {
+    "$note": "쇼피 대량업로드 템플릿의 공통 고정 컬럼. 카테고리마다 달라지는 속성 컬럼(AE~)은 각 카테고리의 attributes에 따로 정의된다. 이 레이아웃은 검증된 2개 카테고리(헤어클립/마스크팩) 모두에서 동일하게 확인됨.",
+    "A": "category_id",
+    "B": "product_name",
+    "C": "description",
+    "D": "parent_sku",
+    "K": "cost_price_krw",
+    "L": "stock",
+    "M": "sku",
+    "N": "cover_image_url",
+    "O": "item_image_url_1",
+    "P": "item_image_url_2",
+    "Q": "item_image_url_3",
+    "R": "item_image_url_4",
+    "S": "item_image_url_5",
+    "Y": "weight_kg",
+    "Z": "length_cm",
+    "AA": "width_cm",
+    "AB": "height_cm",
+    "AC": "days_to_ship"
+  },
   "categories": {
     "SG": [
       {
@@ -64,7 +85,7 @@
         "hsa_relevant": true,
         "notes": [
           "SG Publish 불가. MY/PH 등 Health & Beauty 판매가 가능한 국가에서만 Publish.",
-          "성공 컬럼 세트: A(Category) B(Name) C(Description) D(Parent SKU) K(Price=원가) L(Stock) M(SKU) N(Cover Image) O~S(Item Image 1~5) Y(Weight) Z/AA/AB(치수) AC(Days to Ship) AE~(속성)"
+          "고정 컬럼 레이아웃은 최상위 fixed_columns 참고 (헤어클립 카테고리와 동일하게 확인됨)"
         ]
       }
     ],
