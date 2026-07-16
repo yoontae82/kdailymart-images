@@ -26,7 +26,7 @@
         "note": "margin-agent 스크리닝용 가정치. 실제 수수료는 쇼피 셀러센터 공지 기준으로 주기적 갱신 필요.",
         "transaction_fee_pct": 2.0,
         "commission_pct": "TODO: 카테고리별 커미션율 확인 필요 (셀러센터 공지 기준)",
-        "global_sku_price_rule": "Global SKU Price = 원가(상품원가+운영비+국내배송비)만 입력. 판매가/국제배송비를 넣으면 이중가산 발생(Day 1 실수 이력). 마진 조정은 Market Price Adjustment Rate로만 한다 (100%=마진0, 130%=마진30%)."
+        "global_sku_price_rule": "Global SKU Price = 원가(상품원가+운영비+국내배송비)만 입력. 판매가/국제배송비를 넣으면 이중가산 발생(Day 1 실수 이력). 마진 조정은 Market Price Adjustment Rate로만 한다 (100%=마진0, 130%=마진30%). ⚠️ 2026-07-16 실제 대량업로드 템플릿에는 이 컬럼을 RMB로 입력하라는 안내와 'Global SKU Price × Exchange Rate × Adjustment Ratio + Hidden Price' 공식이 명시되어 있어, 이 KRW/단순관계 전제와 상충될 수 있다. 실제 등록 전 사람이 셀러센터에서 재확인 필요 (자세한 내용은 kdailymart-automation/README.md의 '확인 필요' 섹션 참고)."
       },
       "safe_categories": [
         {

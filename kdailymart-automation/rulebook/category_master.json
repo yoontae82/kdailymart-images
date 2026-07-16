@@ -1,9 +1,9 @@
 {
-  "$schema_note": "listing-agent/master-qa-agent가 카테고리ID, DTS 허용범위, 속성 허용값을 대조하는 마스터 데이터. 새 카테고리를 추가할 때는 반드시 쇼피 카테고리 템플릿의 HiddenCatProps / Pre-order DTS Range / Attribute value mapping / Template 4행 시트를 먼저 전부 파싱한 뒤 채운다 (마스터 원칙 #1). 아직 검증된 2개 카테고리만 채워진 draft 상태입니다.",
-  "version": "v1-draft",
-  "last_updated": "2026-07-13",
+  "$schema_note": "listing-agent/master-qa-agent가 카테고리ID, DTS 허용범위, 속성 허용값을 대조하는 마스터 데이터. 새 카테고리를 추가할 때는 반드시 쇼피 카테고리 템플릿의 HiddenCatProps / Pre-order DTS Range / Attribute value mapping / Template 4행 시트를 먼저 전부 파싱한 뒤 채운다 (마스터 원칙 #1). SG Fashion Accessories > Hair Accessories 6개 카테고리는 실제 쇼피 대량업로드 템플릿(Shopee_mass_upload_global_sku_20260716_advanced_template.xlsx)을 파싱해 채웠고, Beauty > Skincare > Face Mask & Packs(100898)는 이전 세션의 실제 등록 이력에서 채운 draft다.",
+  "version": "v2",
+  "last_updated": "2026-07-16",
   "fixed_columns": {
-    "$note": "쇼피 대량업로드 템플릿의 공통 고정 컬럼. 카테고리마다 달라지는 속성 컬럼(AE~)은 각 카테고리의 attributes에 따로 정의된다. 이 레이아웃은 검증된 2개 카테고리(헤어클립/마스크팩) 모두에서 동일하게 확인됨.",
+    "$note": "쇼피 대량업로드 템플릿의 공통 고정 컬럼. 실제 템플릿(2026-07-16, Global SKU 버전)에서 확인됨: Item Image는 O~V까지 8개 슬롯이 있다 (기존에 5개로 알던 건 과거 자료 기준 오류). 카테고리마다 달라지는 속성 컬럼(AE~)은 각 카테고리의 attributes에 따로 정의된다.",
     "A": "category_id",
     "B": "product_name",
     "C": "description",
@@ -17,41 +17,1913 @@
     "Q": "item_image_url_3",
     "R": "item_image_url_4",
     "S": "item_image_url_5",
+    "T": "item_image_url_6",
+    "U": "item_image_url_7",
+    "V": "item_image_url_8",
     "Y": "weight_kg",
     "Z": "length_cm",
     "AA": "width_cm",
     "AB": "height_cm",
-    "AC": "days_to_ship"
+    "AC": "days_to_ship",
+    "AD": "brand"
   },
   "categories": {
     "SG": [
+      {
+        "path": "Fashion Accessories > Hair Accessories > Headbands",
+        "category_id": 100145,
+        "verified": false,
+        "verification_note": "실제 쇼피 대량업로드 템플릿(2026-07-16 다운로드, HiddenCatProps/Attribute value mapping/Pre-order DTS Range 시트)에서 파싱됨. 등록 자체는 아직 실증 안 됨 - 카테고리ID/DTS/속성은 신뢰 가능하나 첫 등록 시 결과 확인 필요.",
+        "days_to_ship": {
+          "allowed": [
+            [
+              1,
+              1
+            ],
+            [
+              4,
+              10
+            ]
+          ],
+          "banned": [
+            2,
+            3
+          ]
+        },
+        "attributes": {
+          "pack_type": {
+            "label": "pack type",
+            "column": "AE",
+            "mandatory": false,
+            "allowed_values": [
+              "Multipack",
+              "Twin Pack",
+              "Single",
+              "Set",
+              "Triple Pack"
+            ]
+          },
+          "gender": {
+            "label": "Gender",
+            "column": "AF",
+            "mandatory": true,
+            "allowed_values": [
+              "Female",
+              "Male",
+              "Unisex"
+            ]
+          },
+          "region_of_origin": {
+            "label": "Region of Origin",
+            "column": "AG",
+            "mandatory": false,
+            "allowed_values": [
+              "Japan",
+              "Mainland China",
+              "Korea",
+              "Indonesia",
+              "Others",
+              "America",
+              "Taiwan",
+              "Thailand",
+              "Vietnam",
+              "India",
+              "Bangladesh",
+              "Brasil",
+              "Colombia",
+              "Chile",
+              "Argentina",
+              "Mexico"
+            ]
+          },
+          "goods_type": {
+            "label": "Goods Type",
+            "column": "AH",
+            "mandatory": false,
+            "allowed_values": [
+              "Collectibles",
+              "Designed Goods",
+              "Others"
+            ]
+          },
+          "material": {
+            "label": "Material",
+            "column": "AI",
+            "mandatory": false,
+            "allowed_values": [
+              "Bamboo",
+              "Canvas",
+              "Cashmere",
+              "Cotton",
+              "Fleece",
+              "Nylon",
+              "Polyester",
+              "Rayon",
+              "PVC",
+              "Rubber",
+              "Silicone",
+              "Spandex",
+              "Velvet",
+              "ABS",
+              "Paper",
+              "Plastic",
+              "Fabric",
+              "Wood",
+              "Foam",
+              "Glass",
+              "Leather",
+              "Metal",
+              "Chiffon",
+              "Denim",
+              "Felt",
+              "Flannelette",
+              "Fur",
+              "Knit",
+              "Lace",
+              "Linen",
+              "Others",
+              "Silk",
+              "Synthetic",
+              "Textile",
+              "Babyterry",
+              "Lycra",
+              "Diamond",
+              "Pearl",
+              "Steel",
+              "Knitted",
+              "Braided",
+              "PU Leather",
+              "Mesh",
+              "Suede",
+              "Polycarbonate",
+              "Copper",
+              "Stainless steel",
+              "Coated",
+              "Alloy",
+              "Jersey",
+              "Cardboard",
+              "Scuba",
+              "Acrylic",
+              "Wool",
+              "Stone",
+              "Flannel",
+              "Microfiber",
+              "Rattan",
+              "Jute",
+              "Vinyl",
+              "Brass",
+              "Feather",
+              "Sheepskin",
+              "Crystal",
+              "Crepe",
+              "Jacquard",
+              "Rib",
+              "Modal",
+              "Faux Fur",
+              "Corduroy",
+              "Braid",
+              "Cowhide",
+              "Goatskin",
+              "Metallic",
+              "Satin",
+              "Twill",
+              "Acetate",
+              "Non-woven",
+              "Polypropylene",
+              "Coated Metal",
+              "Aluminum Alloy",
+              "Artificial Leather",
+              "Oxford",
+              "Shell",
+              "Silk/Satin",
+              "Polypropylene (PP)",
+              "Plexiglass",
+              "Polyethylene (PE)",
+              "Gauze",
+              "Terry Cloth",
+              "Non-woven Fabric",
+              "Chenille",
+              "Composite Leather",
+              "Mixed Textile",
+              "Resin",
+              "Iron",
+              "Polycarbonate (PC)",
+              "Cotton Jersey",
+              "Polycotton",
+              "Cotton Blend",
+              "Cotton Polyester",
+              "Cotton Spandex",
+              "Mulberry Silk",
+              "Rayon Cotton",
+              "Cotton Linen",
+              "Poplin",
+              "Silk Satin",
+              "Cotton Lycra",
+              "Seersucker",
+              "Knitted Material",
+              "Batik Fabric",
+              "Synthetic Fabric",
+              "Knitted Fabric",
+              "Waterproof Fabric",
+              "Stretch Fabric",
+              "Organza",
+              "Plush",
+              "Titanium Steel",
+              "Zinc Alloy",
+              "Zircon",
+              "Rhinestone",
+              "Gemstones",
+              "Imitation Pearl",
+              "Beads",
+              "PET Plastic",
+              "Natural Rubber"
+            ]
+          },
+          "pattern": {
+            "label": "Pattern",
+            "column": "AK",
+            "mandatory": false,
+            "input_type": "free_text_or_unvalidated"
+          },
+          "bsmi": {
+            "label": "BSMI",
+            "column": "AO",
+            "mandatory": false,
+            "input_type": "free_text_or_unvalidated"
+          },
+          "quantity": {
+            "label": "Quantity",
+            "column": "AQ",
+            "mandatory": false,
+            "input_type": "free_text_or_unvalidated"
+          },
+          "indication": {
+            "label": "indication",
+            "column": "AR",
+            "mandatory": false,
+            "input_type": "free_text_or_unvalidated"
+          },
+          "manufacturer_trader_name": {
+            "label": "Manufacturer/trader name",
+            "column": "AS",
+            "mandatory": false,
+            "allowed_values": [
+              "Updating"
+            ]
+          },
+          "manufacturer_trader_address": {
+            "label": "Manufacturer/trader address",
+            "column": "AT",
+            "mandatory": false,
+            "allowed_values": [
+              "Updating"
+            ]
+          },
+          "custom_product": {
+            "label": "Custom Product",
+            "column": "AU",
+            "mandatory": false,
+            "allowed_values": [
+              "Yes",
+              "No"
+            ]
+          },
+          "certificate_no_halal": {
+            "label": "Certificate No. (Halal)",
+            "column": "AV",
+            "mandatory": false,
+            "input_type": "free_text_or_unvalidated"
+          },
+          "na": {
+            "label": "NA",
+            "column": "AW",
+            "mandatory": false,
+            "allowed_values": [
+              "Yes"
+            ]
+          },
+          "care_instructions": {
+            "label": "Care Instructions",
+            "column": "AX",
+            "mandatory": false,
+            "input_type": "free_text_or_unvalidated"
+          },
+          "quantity_per_pack": {
+            "label": "Quantity per Pack",
+            "column": "AY",
+            "mandatory": false,
+            "allowed_values": [
+              "1",
+              "2",
+              "3",
+              "4",
+              "5",
+              "6",
+              "7",
+              "8",
+              "9",
+              "10",
+              "11",
+              "12"
+            ]
+          },
+          "model": {
+            "label": "Model",
+            "column": "BF",
+            "mandatory": false,
+            "input_type": "free_text_or_unvalidated"
+          },
+          "halal_certificates": {
+            "label": "HALAL Certificates",
+            "column": "BG",
+            "mandatory": false,
+            "allowed_values": [
+              "Yes",
+              "No"
+            ]
+          },
+          "certification_license": {
+            "label": "Certification/License",
+            "column": "BH",
+            "mandatory": false,
+            "allowed_values": [
+              "Yes",
+              "No"
+            ]
+          },
+          "certificate_registration_no": {
+            "label": "Certificate/Registration No.",
+            "column": "BI",
+            "mandatory": false,
+            "input_type": "free_text_or_unvalidated"
+          },
+          "player_type": {
+            "label": "Player Type",
+            "column": "BJ",
+            "mandatory": false,
+            "input_type": "free_text_or_unvalidated"
+          },
+          "non_halal_ingredients": {
+            "label": "Non Halal Ingredients",
+            "column": "BL",
+            "mandatory": false,
+            "allowed_values": [
+              "Contains Non Halal ingredients",
+              "Not contains Non Halal ingredients"
+            ]
+          }
+        },
+        "hsa_relevant": false
+      },
+      {
+        "path": "Fashion Accessories > Hair Accessories > Hair Ties, Ribbons & Scrunchies",
+        "category_id": 100146,
+        "verified": false,
+        "verification_note": "실제 쇼피 대량업로드 템플릿(2026-07-16 다운로드, HiddenCatProps/Attribute value mapping/Pre-order DTS Range 시트)에서 파싱됨. 등록 자체는 아직 실증 안 됨 - 카테고리ID/DTS/속성은 신뢰 가능하나 첫 등록 시 결과 확인 필요.",
+        "days_to_ship": {
+          "allowed": [
+            [
+              1,
+              1
+            ],
+            [
+              4,
+              10
+            ]
+          ],
+          "banned": [
+            2,
+            3
+          ]
+        },
+        "attributes": {
+          "pack_type": {
+            "label": "pack type",
+            "column": "AE",
+            "mandatory": false,
+            "allowed_values": [
+              "Multipack",
+              "Twin Pack",
+              "Single",
+              "Set",
+              "Triple Pack"
+            ]
+          },
+          "gender": {
+            "label": "Gender",
+            "column": "AF",
+            "mandatory": true,
+            "allowed_values": [
+              "Female",
+              "Male",
+              "Unisex"
+            ]
+          },
+          "region_of_origin": {
+            "label": "Region of Origin",
+            "column": "AG",
+            "mandatory": false,
+            "allowed_values": [
+              "Japan",
+              "Mainland China",
+              "Korea",
+              "Indonesia",
+              "Others",
+              "America",
+              "Taiwan",
+              "Thailand",
+              "Vietnam",
+              "India",
+              "Bangladesh",
+              "Brasil",
+              "Colombia",
+              "Chile",
+              "Argentina",
+              "Mexico"
+            ]
+          },
+          "goods_type": {
+            "label": "Goods Type",
+            "column": "AH",
+            "mandatory": false,
+            "allowed_values": [
+              "Collectibles",
+              "Designed Goods",
+              "Others"
+            ]
+          },
+          "material": {
+            "label": "Material",
+            "column": "AI",
+            "mandatory": false,
+            "allowed_values": [
+              "Bamboo",
+              "Canvas",
+              "Cashmere",
+              "Cotton",
+              "Fleece",
+              "Muslin",
+              "Nylon",
+              "Polyester",
+              "Rayon",
+              "PVC",
+              "Rubber",
+              "Silicone",
+              "Spandex",
+              "Velvet",
+              "Voile",
+              "ABS",
+              "Paper",
+              "Plastic",
+              "Fabric",
+              "Wood",
+              "Foam",
+              "Glass",
+              "Leather",
+              "Metal",
+              "Chiffon",
+              "Denim",
+              "Felt",
+              "Flannelette",
+              "Fur",
+              "Knit",
+              "Lace",
+              "Linen",
+              "Others",
+              "Silk",
+              "Synthetic",
+              "Textile",
+              "Babyterry",
+              "Lycra",
+              "Moscrepe",
+              "Voal",
+              "Diamond",
+              "Jade",
+              "Metal Coating",
+              "Silver",
+              "Pearl",
+              "Steel",
+              "Titanium, Bismuth & Magnet",
+              "Knitted",
+              "Braided",
+              "PU Leather",
+              "Mesh",
+              "Suede",
+              "Aluminum",
+              "Copper",
+              "Stainless steel",
+              "Coated",
+              "Alloy",
+              "Jersey",
+              "TPE",
+              "Cardboard",
+              "Scuba",
+              "Acrylic",
+              "Wool",
+              "Stone",
+              "Flannel",
+              "Microfiber",
+              "Rattan",
+              "Jute",
+              "Sisal",
+              "Brass",
+              "Latex",
+              "Feather",
+              "Carbon Steel",
+              "TPU",
+              "Silicon",
+              "Crystal",
+              "Jacquard",
+              "Rib",
+              "Mohair",
+              "Modal",
+              "Faux Fur",
+              "Corduroy",
+              "Braid",
+              "Cowhide",
+              "Metallic",
+              "Satin",
+              "Acetate",
+              "Non-woven",
+              "Polypropylene",
+              "Recycled",
+              "Aluminum Alloy",
+              "Artificial Leather",
+              "Oxford",
+              "Shell",
+              "Silk/Satin",
+              "Polypropylene (PP)",
+              "Plexiglass",
+              "Polyethylene (PE)",
+              "Polystyrene (PS)",
+              "Gauze",
+              "Terry Cloth",
+              "Non-woven Fabric",
+              "Chenille",
+              "Mixed Textile",
+              "Resin",
+              "Bamboo Fiber",
+              "Iron",
+              "Polycarbonate (PC)",
+              "Cordura",
+              "Organic Cotton",
+              "Cotton Voile",
+              "Cotton Ribbed",
+              "Polycotton",
+              "Cotton Blend",
+              "Cotton Polyester",
+              "Mulberry Silk",
+              "Cotton Linen",
+              "Como Crepe",
+              "CEY Crepe",
+              "Heavy Chiffon",
+              "Ceruty",
+              "Korean Chiffon",
+              "Silk Satin",
+              "Viscose(Rayon)",
+              "Seersucker",
+              "Batik Fabric",
+              "Synthetic Fabric",
+              "Knitted Fabric",
+              "Waterproof Fabric",
+              "Breathable Fabric",
+              "Stretch Fabric",
+              "Songket",
+              "Brocade",
+              "Organza",
+              "Plush",
+              "Zinc Alloy",
+              "Rhinestone",
+              "Gemstones",
+              "Imitation Pearl",
+              "Beads",
+              "Natural Rubber"
+            ]
+          },
+          "pattern": {
+            "label": "Pattern",
+            "column": "AK",
+            "mandatory": false,
+            "input_type": "free_text_or_unvalidated"
+          },
+          "bsmi": {
+            "label": "BSMI",
+            "column": "AO",
+            "mandatory": false,
+            "input_type": "free_text_or_unvalidated"
+          },
+          "quantity": {
+            "label": "Quantity",
+            "column": "AQ",
+            "mandatory": false,
+            "input_type": "free_text_or_unvalidated"
+          },
+          "indication": {
+            "label": "indication",
+            "column": "AR",
+            "mandatory": false,
+            "input_type": "free_text_or_unvalidated"
+          },
+          "manufacturer_trader_name": {
+            "label": "Manufacturer/trader name",
+            "column": "AS",
+            "mandatory": false,
+            "allowed_values": [
+              "Updating"
+            ]
+          },
+          "manufacturer_trader_address": {
+            "label": "Manufacturer/trader address",
+            "column": "AT",
+            "mandatory": false,
+            "allowed_values": [
+              "Updating"
+            ]
+          },
+          "custom_product": {
+            "label": "Custom Product",
+            "column": "AU",
+            "mandatory": false,
+            "allowed_values": [
+              "Yes",
+              "No"
+            ]
+          },
+          "certificate_no_halal": {
+            "label": "Certificate No. (Halal)",
+            "column": "AV",
+            "mandatory": false,
+            "input_type": "free_text_or_unvalidated"
+          },
+          "na": {
+            "label": "NA",
+            "column": "AW",
+            "mandatory": false,
+            "allowed_values": [
+              "Yes"
+            ]
+          },
+          "care_instructions": {
+            "label": "Care Instructions",
+            "column": "AX",
+            "mandatory": false,
+            "input_type": "free_text_or_unvalidated"
+          },
+          "quantity_per_pack": {
+            "label": "Quantity per Pack",
+            "column": "AY",
+            "mandatory": false,
+            "allowed_values": [
+              "1",
+              "2",
+              "3",
+              "4",
+              "5",
+              "6",
+              "7",
+              "8",
+              "9",
+              "10",
+              "11",
+              "12"
+            ]
+          },
+          "model": {
+            "label": "Model",
+            "column": "BF",
+            "mandatory": false,
+            "input_type": "free_text_or_unvalidated"
+          },
+          "halal_certificates": {
+            "label": "HALAL Certificates",
+            "column": "BG",
+            "mandatory": false,
+            "allowed_values": [
+              "Yes",
+              "No"
+            ]
+          },
+          "certification_license": {
+            "label": "Certification/License",
+            "column": "BH",
+            "mandatory": false,
+            "allowed_values": [
+              "Yes",
+              "No"
+            ]
+          },
+          "certificate_registration_no": {
+            "label": "Certificate/Registration No.",
+            "column": "BI",
+            "mandatory": false,
+            "input_type": "free_text_or_unvalidated"
+          },
+          "player_type": {
+            "label": "Player Type",
+            "column": "BJ",
+            "mandatory": false,
+            "input_type": "free_text_or_unvalidated"
+          },
+          "size": {
+            "label": "Size",
+            "column": "BK",
+            "mandatory": false,
+            "input_type": "free_text_or_unvalidated"
+          },
+          "non_halal_ingredients": {
+            "label": "Non Halal Ingredients",
+            "column": "BL",
+            "mandatory": false,
+            "allowed_values": [
+              "Contains Non Halal ingredients",
+              "Not contains Non Halal ingredients"
+            ]
+          }
+        },
+        "hsa_relevant": false
+      },
       {
         "path": "Fashion Accessories > Hair Accessories > Hair Clips & Hair Pins",
         "category_id": 100147,
         "verified": true,
         "verified_on": "2026-07-13",
-        "verification_note": "대량등록 1/1 + 개별 Publish → LIVE 성공",
+        "verification_note": "대량등록 1/1 + 개별 Publish → LIVE 성공 (2026-07-13). 속성/DTS 데이터는 2026-07-16 실제 템플릿으로 재검증됨.",
         "days_to_ship": {
-          "allowed": [[1, 1], [4, 10]],
-          "banned": [2, 3],
-          "note": "DTS 2, 3은 Pre-order DTS Range 시트에서 금지값으로 확인됨"
+          "allowed": [
+            [
+              1,
+              1
+            ],
+            [
+              4,
+              10
+            ]
+          ],
+          "banned": [
+            2,
+            3
+          ]
         },
         "attributes": {
           "pack_type": {
+            "label": "pack type",
             "column": "AE",
-            "allowed_values": ["Multipack", "Twin Pack", "Set", "Triple Pack", "Single"]
+            "mandatory": false,
+            "allowed_values": [
+              "Multipack",
+              "Twin Pack",
+              "Single",
+              "Set",
+              "Triple Pack"
+            ]
           },
           "gender": {
+            "label": "Gender",
             "column": "AF",
-            "allowed_values": ["Female", "Male", "Unisex"]
+            "mandatory": true,
+            "allowed_values": [
+              "Female",
+              "Male",
+              "Unisex"
+            ]
           },
           "region_of_origin": {
+            "label": "Region of Origin",
             "column": "AG",
-            "allowed_values": ["Korea"]
+            "mandatory": false,
+            "allowed_values": [
+              "Japan",
+              "Mainland China",
+              "Korea",
+              "Indonesia",
+              "Others",
+              "America",
+              "Taiwan",
+              "Thailand",
+              "Vietnam",
+              "India",
+              "Bangladesh",
+              "Brasil",
+              "Colombia",
+              "Chile",
+              "Argentina",
+              "Mexico"
+            ]
+          },
+          "goods_type": {
+            "label": "Goods Type",
+            "column": "AH",
+            "mandatory": false,
+            "allowed_values": [
+              "Collectibles",
+              "Designed Goods",
+              "Others"
+            ]
+          },
+          "material": {
+            "label": "Material",
+            "column": "AI",
+            "mandatory": false,
+            "allowed_values": [
+              "Bamboo",
+              "Canvas",
+              "Cashmere",
+              "Cotton",
+              "Fleece",
+              "Nylon",
+              "Polyester",
+              "Rayon",
+              "PVC",
+              "Rubber",
+              "Silicone",
+              "Spandex",
+              "Velvet",
+              "ABS",
+              "Clay",
+              "Paper",
+              "Plastic",
+              "Fabric",
+              "Wood",
+              "Foam",
+              "Glass",
+              "Leather",
+              "Metal",
+              "Sand",
+              "Chiffon",
+              "Denim",
+              "Felt",
+              "Flannelette",
+              "Fur",
+              "Khaki",
+              "Knit",
+              "Lace",
+              "Linen",
+              "Others",
+              "Silk",
+              "Synthetic",
+              "Textile",
+              "Babyterry",
+              "Lycra",
+              "Diamond",
+              "Jade",
+              "Silver",
+              "Pearl",
+              "Steel",
+              "Knitted",
+              "Braided",
+              "PU Leather",
+              "Mesh",
+              "Suede",
+              "Polycarbonate",
+              "Aluminum",
+              "Ceramic",
+              "Copper",
+              "Stainless steel",
+              "Anodized Aluminum",
+              "Coated",
+              "Aluminium",
+              "Alloy",
+              "Cardboard",
+              "Stones",
+              "Acrylic",
+              "Wool",
+              "Porcelain",
+              "Stone",
+              "Flannel",
+              "Rattan",
+              "Vinyl",
+              "Brass",
+              "Chrome",
+              "Latex",
+              "Memory Foam",
+              "Feather",
+              "Silicon",
+              "Amethyst",
+              "Crystal",
+              "Crepe",
+              "Mohair",
+              "Faux Fur",
+              "Corduroy",
+              "Nubuck",
+              "Metallic",
+              "Satin",
+              "Acetate",
+              "Non-woven",
+              "Polypropylene",
+              "Coated Metal",
+              "Aluminum Alloy",
+              "Carbon Fiber",
+              "Artificial Leather",
+              "Shell",
+              "Silk/Satin",
+              "Straw/Bamboo",
+              "Polypropylene (PP)",
+              "Plexiglass",
+              "Polyethylene (PE)",
+              "Polystyrene (PS)",
+              "pc",
+              "Gauze",
+              "Terry Cloth",
+              "Mineral",
+              "Non-woven Fabric",
+              "Mixed Textile",
+              "White Jade",
+              "Turquoise",
+              "Jadeite",
+              "Resin",
+              "Iron",
+              "Polycarbonate (PC)",
+              "Polímero",
+              "Polycotton",
+              "Polyamide",
+              "Silk Satin",
+              "Viscose(Rayon)",
+              "Seersucker",
+              "Breathable Mesh",
+              "Synthetic Fabric",
+              "Knitted Fabric",
+              "Waterproof Fabric",
+              "Organza",
+              "Plush",
+              "Zinc Alloy",
+              "Enamel",
+              "Cubic Zirconia",
+              "Zircon",
+              "Rhinestone",
+              "Gemstones",
+              "Imitation Pearl",
+              "Beads",
+              "BPA-free Plastic",
+              "ABS Plastic",
+              "ABS+PC Blend",
+              "EVA Foam"
+            ]
+          },
+          "length": {
+            "label": "Length",
+            "column": "AM",
+            "mandatory": false,
+            "input_type": "free_text_or_unvalidated"
+          },
+          "dimension_l_x_w_x_h": {
+            "label": "Dimension (L x W x H)",
+            "column": "AN",
+            "mandatory": false,
+            "input_type": "free_text_or_unvalidated"
+          },
+          "bsmi": {
+            "label": "BSMI",
+            "column": "AO",
+            "mandatory": false,
+            "input_type": "free_text_or_unvalidated"
+          },
+          "quantity": {
+            "label": "Quantity",
+            "column": "AQ",
+            "mandatory": false,
+            "input_type": "free_text_or_unvalidated"
+          },
+          "indication": {
+            "label": "indication",
+            "column": "AR",
+            "mandatory": false,
+            "input_type": "free_text_or_unvalidated"
+          },
+          "manufacturer_trader_name": {
+            "label": "Manufacturer/trader name",
+            "column": "AS",
+            "mandatory": false,
+            "allowed_values": [
+              "Updating"
+            ]
+          },
+          "manufacturer_trader_address": {
+            "label": "Manufacturer/trader address",
+            "column": "AT",
+            "mandatory": false,
+            "allowed_values": [
+              "Updating"
+            ]
+          },
+          "custom_product": {
+            "label": "Custom Product",
+            "column": "AU",
+            "mandatory": false,
+            "allowed_values": [
+              "Yes",
+              "No"
+            ]
+          },
+          "certificate_no_halal": {
+            "label": "Certificate No. (Halal)",
+            "column": "AV",
+            "mandatory": false,
+            "input_type": "free_text_or_unvalidated"
+          },
+          "na": {
+            "label": "NA",
+            "column": "AW",
+            "mandatory": false,
+            "allowed_values": [
+              "Yes"
+            ]
+          },
+          "care_instructions": {
+            "label": "Care Instructions",
+            "column": "AX",
+            "mandatory": false,
+            "input_type": "free_text_or_unvalidated"
+          },
+          "quantity_per_pack": {
+            "label": "Quantity per Pack",
+            "column": "AY",
+            "mandatory": false,
+            "allowed_values": [
+              "1",
+              "2",
+              "3",
+              "4",
+              "5",
+              "6",
+              "7",
+              "8",
+              "9",
+              "10",
+              "11",
+              "12"
+            ]
+          },
+          "shape": {
+            "label": "Shape",
+            "column": "BE",
+            "mandatory": false,
+            "input_type": "free_text_or_unvalidated"
+          },
+          "model": {
+            "label": "Model",
+            "column": "BF",
+            "mandatory": false,
+            "input_type": "free_text_or_unvalidated"
+          },
+          "halal_certificates": {
+            "label": "HALAL Certificates",
+            "column": "BG",
+            "mandatory": false,
+            "allowed_values": [
+              "Yes",
+              "No"
+            ]
+          },
+          "certification_license": {
+            "label": "Certification/License",
+            "column": "BH",
+            "mandatory": false,
+            "allowed_values": [
+              "Yes",
+              "No"
+            ]
+          },
+          "certificate_registration_no": {
+            "label": "Certificate/Registration No.",
+            "column": "BI",
+            "mandatory": false,
+            "input_type": "free_text_or_unvalidated"
+          },
+          "player_type": {
+            "label": "Player Type",
+            "column": "BJ",
+            "mandatory": false,
+            "input_type": "free_text_or_unvalidated"
+          },
+          "size": {
+            "label": "Size",
+            "column": "BK",
+            "mandatory": false,
+            "input_type": "free_text_or_unvalidated"
+          },
+          "non_halal_ingredients": {
+            "label": "Non Halal Ingredients",
+            "column": "BL",
+            "mandatory": false,
+            "allowed_values": [
+              "Contains Non Halal ingredients",
+              "Not contains Non Halal ingredients"
+            ]
           }
         },
-        "hsa_relevant": false,
-        "notes": ["Beauty 계열이 아니므로 HSA 무관"]
+        "hsa_relevant": false
+      },
+      {
+        "path": "Fashion Accessories > Hair Accessories > Wigs & Extensions",
+        "category_id": 100148,
+        "verified": false,
+        "verification_note": "실제 쇼피 대량업로드 템플릿(2026-07-16 다운로드, HiddenCatProps/Attribute value mapping/Pre-order DTS Range 시트)에서 파싱됨. 등록 자체는 아직 실증 안 됨 - 카테고리ID/DTS/속성은 신뢰 가능하나 첫 등록 시 결과 확인 필요.",
+        "days_to_ship": {
+          "allowed": [
+            [
+              1,
+              1
+            ],
+            [
+              4,
+              10
+            ]
+          ],
+          "banned": [
+            2,
+            3
+          ]
+        },
+        "attributes": {
+          "gender": {
+            "label": "Gender",
+            "column": "AF",
+            "mandatory": true,
+            "allowed_values": [
+              "Female",
+              "Male",
+              "Unisex"
+            ]
+          },
+          "region_of_origin": {
+            "label": "Region of Origin",
+            "column": "AG",
+            "mandatory": false,
+            "allowed_values": [
+              "Japan",
+              "Mainland China",
+              "Korea",
+              "Indonesia",
+              "Others",
+              "America",
+              "Taiwan",
+              "Thailand",
+              "Vietnam",
+              "India",
+              "Bangladesh",
+              "Brasil",
+              "Colombia",
+              "Chile",
+              "Argentina",
+              "Mexico"
+            ]
+          },
+          "material": {
+            "label": "Material",
+            "column": "AI",
+            "mandatory": false,
+            "input_type": "free_text_or_unvalidated"
+          },
+          "length": {
+            "label": "Length",
+            "column": "AM",
+            "mandatory": false,
+            "input_type": "free_text_or_unvalidated"
+          },
+          "dimension_l_x_w_x_h": {
+            "label": "Dimension (L x W x H)",
+            "column": "AN",
+            "mandatory": false,
+            "input_type": "free_text_or_unvalidated"
+          },
+          "quantity": {
+            "label": "Quantity",
+            "column": "AQ",
+            "mandatory": false,
+            "input_type": "free_text_or_unvalidated"
+          },
+          "indication": {
+            "label": "indication",
+            "column": "AR",
+            "mandatory": false,
+            "input_type": "free_text_or_unvalidated"
+          },
+          "manufacturer_trader_name": {
+            "label": "Manufacturer/trader name",
+            "column": "AS",
+            "mandatory": false,
+            "allowed_values": [
+              "Updating"
+            ]
+          },
+          "manufacturer_trader_address": {
+            "label": "Manufacturer/trader address",
+            "column": "AT",
+            "mandatory": false,
+            "allowed_values": [
+              "Updating"
+            ]
+          },
+          "custom_product": {
+            "label": "Custom Product",
+            "column": "AU",
+            "mandatory": false,
+            "allowed_values": [
+              "Yes",
+              "No"
+            ]
+          },
+          "certificate_no_halal": {
+            "label": "Certificate No. (Halal)",
+            "column": "AV",
+            "mandatory": false,
+            "input_type": "free_text_or_unvalidated"
+          },
+          "na": {
+            "label": "NA",
+            "column": "AW",
+            "mandatory": false,
+            "allowed_values": [
+              "Yes"
+            ]
+          },
+          "care_instructions": {
+            "label": "Care Instructions",
+            "column": "AX",
+            "mandatory": false,
+            "input_type": "free_text_or_unvalidated"
+          },
+          "quantity_per_pack": {
+            "label": "Quantity per Pack",
+            "column": "AY",
+            "mandatory": false,
+            "allowed_values": [
+              "1",
+              "2",
+              "3",
+              "4",
+              "5",
+              "6",
+              "7",
+              "8",
+              "9",
+              "10",
+              "11",
+              "12"
+            ]
+          },
+          "theme": {
+            "label": "Theme",
+            "column": "AZ",
+            "mandatory": false,
+            "allowed_values": [
+              "Cartoon Character",
+              "Disney",
+              "Marvel",
+              "DC",
+              "Celebrity",
+              "Halloween",
+              "Movie/TV",
+              "Scary/Creepy"
+            ]
+          },
+          "hair_type": {
+            "label": "Hair Type",
+            "column": "BA",
+            "mandatory": false,
+            "allowed_values": [
+              "Curly",
+              "Straight",
+              "Wavy",
+              "Coily"
+            ]
+          },
+          "hair_color": {
+            "label": "Hair Color",
+            "column": "BB",
+            "mandatory": false,
+            "allowed_values": [
+              "Black",
+              "Blonde",
+              "Brown",
+              "Beige"
+            ]
+          },
+          "hair_feature": {
+            "label": "Hair Feature",
+            "column": "BC",
+            "mandatory": false,
+            "allowed_values": [
+              "Heat Resistant",
+              "Glueless"
+            ]
+          },
+          "type": {
+            "label": "Type",
+            "column": "BD",
+            "mandatory": false,
+            "allowed_values": [
+              "Hair Braids",
+              "Hair Bundles",
+              "Toupees",
+              "Ponytail Extensions",
+              "Hair Toppers",
+              "Bangs",
+              "Clip-In Hair Extensions",
+              "Hair Buns"
+            ]
+          },
+          "model": {
+            "label": "Model",
+            "column": "BF",
+            "mandatory": false,
+            "input_type": "free_text_or_unvalidated"
+          },
+          "halal_certificates": {
+            "label": "HALAL Certificates",
+            "column": "BG",
+            "mandatory": false,
+            "allowed_values": [
+              "Yes",
+              "No"
+            ]
+          },
+          "certification_license": {
+            "label": "Certification/License",
+            "column": "BH",
+            "mandatory": false,
+            "allowed_values": [
+              "Yes",
+              "No"
+            ]
+          },
+          "certificate_registration_no": {
+            "label": "Certificate/Registration No.",
+            "column": "BI",
+            "mandatory": false,
+            "input_type": "free_text_or_unvalidated"
+          },
+          "player_type": {
+            "label": "Player Type",
+            "column": "BJ",
+            "mandatory": false,
+            "input_type": "free_text_or_unvalidated"
+          },
+          "size": {
+            "label": "Size",
+            "column": "BK",
+            "mandatory": false,
+            "input_type": "free_text_or_unvalidated"
+          },
+          "non_halal_ingredients": {
+            "label": "Non Halal Ingredients",
+            "column": "BL",
+            "mandatory": false,
+            "allowed_values": [
+              "Contains Non Halal ingredients",
+              "Not contains Non Halal ingredients"
+            ]
+          }
+        },
+        "hsa_relevant": false
+      },
+      {
+        "path": "Fashion Accessories > Hair Accessories > Headpieces, Tiaras & Flower Crowns",
+        "category_id": 100149,
+        "verified": false,
+        "verification_note": "실제 쇼피 대량업로드 템플릿(2026-07-16 다운로드, HiddenCatProps/Attribute value mapping/Pre-order DTS Range 시트)에서 파싱됨. 등록 자체는 아직 실증 안 됨 - 카테고리ID/DTS/속성은 신뢰 가능하나 첫 등록 시 결과 확인 필요.",
+        "days_to_ship": {
+          "allowed": [
+            [
+              1,
+              1
+            ],
+            [
+              4,
+              10
+            ]
+          ],
+          "banned": [
+            2,
+            3
+          ]
+        },
+        "attributes": {
+          "gender": {
+            "label": "Gender",
+            "column": "AF",
+            "mandatory": true,
+            "allowed_values": [
+              "Female",
+              "Male",
+              "Unisex"
+            ]
+          },
+          "region_of_origin": {
+            "label": "Region of Origin",
+            "column": "AG",
+            "mandatory": false,
+            "allowed_values": [
+              "Japan",
+              "Mainland China",
+              "Korea",
+              "Indonesia",
+              "Others",
+              "America",
+              "Taiwan",
+              "Thailand",
+              "Vietnam",
+              "India",
+              "Bangladesh",
+              "Brasil",
+              "Colombia",
+              "Chile",
+              "Argentina",
+              "Mexico"
+            ]
+          },
+          "goods_type": {
+            "label": "Goods Type",
+            "column": "AH",
+            "mandatory": false,
+            "allowed_values": [
+              "Collectibles",
+              "Designed Goods",
+              "Others"
+            ]
+          },
+          "material": {
+            "label": "Material",
+            "column": "AI",
+            "mandatory": false,
+            "allowed_values": [
+              "Bamboo",
+              "Canvas",
+              "Cashmere",
+              "Cotton",
+              "Fleece",
+              "Nylon",
+              "Polyester",
+              "Rayon",
+              "PVC",
+              "Rubber",
+              "Gel",
+              "Silicone",
+              "Spandex",
+              "Velvet",
+              "ABS",
+              "Paper",
+              "Plastic",
+              "Fabric",
+              "Wood",
+              "Foam",
+              "Glass",
+              "Leather",
+              "Metal",
+              "Chiffon",
+              "Denim",
+              "Down",
+              "Felt",
+              "Fur",
+              "Knit",
+              "Lace",
+              "Linen",
+              "Others",
+              "Silk",
+              "Synthetic",
+              "Textile",
+              "Babyterry",
+              "Lycra",
+              "Diamond",
+              "Jade",
+              "Metal Coating",
+              "Platinum",
+              "Silver",
+              "Pearl",
+              "Steel",
+              "Titanium, Bismuth & Magnet",
+              "Knitted",
+              "PU Leather",
+              "Mesh",
+              "Suede",
+              "Aluminum",
+              "Ceramic",
+              "Copper",
+              "Stainless steel",
+              "Coated",
+              "Alloy",
+              "Jersey",
+              "Cardboard",
+              "Scuba",
+              "Stones",
+              "Acrylic",
+              "Wool",
+              "Stone",
+              "Flannel",
+              "Microfiber",
+              "Rattan",
+              "Brass",
+              "Feather",
+              "TPU",
+              "Agate",
+              "Amethyst",
+              "Crystal",
+              "Garnet",
+              "Quartz",
+              "Tiger Eye",
+              "Faux Fur",
+              "Cowhide",
+              "Metallic",
+              "Satin",
+              "Acetate",
+              "Non-woven",
+              "Polypropylene",
+              "Aluminum Alloy",
+              "Artificial Leather",
+              "Shell",
+              "Silk/Satin",
+              "Plexiglass",
+              "Polyethylene (PE)",
+              "Gauze",
+              "Mineral",
+              "Non-woven Fabric",
+              "Chenille",
+              "Composite Leather",
+              "Mixed Textile",
+              "Turquoise",
+              "Resin",
+              "Wax",
+              "Iron",
+              "Synthetic Fabric",
+              "Stretch Fabric",
+              "Songket",
+              "Organza",
+              "Plush",
+              "Zinc Alloy",
+              "Enamel",
+              "Cubic Zirconia",
+              "Zircon",
+              "Rhinestone",
+              "Gemstones",
+              "Imitation Pearl",
+              "Beads",
+              "ABS Plastic",
+              "EVA Foam",
+              "PU Foam"
+            ]
+          },
+          "occasion": {
+            "label": "Occasion",
+            "column": "AJ",
+            "mandatory": false,
+            "allowed_values": [
+              "Casual",
+              "Others",
+              "Party",
+              "Prom",
+              "Work",
+              "Formal",
+              "Anniversary",
+              "Auspicious",
+              "Birthday",
+              "Engagement",
+              "Wedding",
+              "Sports",
+              "Evening",
+              "Daily",
+              "Housewarming",
+              "Ceremony",
+              "Baby Shower",
+              "New Years Eve",
+              "Christmas",
+              "Graduation"
+            ]
+          },
+          "condition": {
+            "label": "Condition",
+            "column": "AL",
+            "mandatory": false,
+            "input_type": "free_text_or_unvalidated"
+          },
+          "dimension_l_x_w_x_h": {
+            "label": "Dimension (L x W x H)",
+            "column": "AN",
+            "mandatory": false,
+            "input_type": "free_text_or_unvalidated"
+          },
+          "bsmi": {
+            "label": "BSMI",
+            "column": "AO",
+            "mandatory": false,
+            "input_type": "free_text_or_unvalidated"
+          },
+          "quantity": {
+            "label": "Quantity",
+            "column": "AQ",
+            "mandatory": false,
+            "input_type": "free_text_or_unvalidated"
+          },
+          "indication": {
+            "label": "indication",
+            "column": "AR",
+            "mandatory": false,
+            "input_type": "free_text_or_unvalidated"
+          },
+          "manufacturer_trader_name": {
+            "label": "Manufacturer/trader name",
+            "column": "AS",
+            "mandatory": false,
+            "allowed_values": [
+              "Updating"
+            ]
+          },
+          "manufacturer_trader_address": {
+            "label": "Manufacturer/trader address",
+            "column": "AT",
+            "mandatory": false,
+            "allowed_values": [
+              "Updating"
+            ]
+          },
+          "custom_product": {
+            "label": "Custom Product",
+            "column": "AU",
+            "mandatory": false,
+            "allowed_values": [
+              "Yes",
+              "No"
+            ]
+          },
+          "certificate_no_halal": {
+            "label": "Certificate No. (Halal)",
+            "column": "AV",
+            "mandatory": false,
+            "input_type": "free_text_or_unvalidated"
+          },
+          "na": {
+            "label": "NA",
+            "column": "AW",
+            "mandatory": false,
+            "allowed_values": [
+              "Yes"
+            ]
+          },
+          "care_instructions": {
+            "label": "Care Instructions",
+            "column": "AX",
+            "mandatory": false,
+            "input_type": "free_text_or_unvalidated"
+          },
+          "quantity_per_pack": {
+            "label": "Quantity per Pack",
+            "column": "AY",
+            "mandatory": false,
+            "allowed_values": [
+              "1",
+              "2",
+              "3",
+              "4",
+              "5",
+              "6",
+              "7",
+              "8",
+              "9",
+              "10",
+              "11",
+              "12"
+            ]
+          },
+          "model": {
+            "label": "Model",
+            "column": "BF",
+            "mandatory": false,
+            "input_type": "free_text_or_unvalidated"
+          },
+          "halal_certificates": {
+            "label": "HALAL Certificates",
+            "column": "BG",
+            "mandatory": false,
+            "allowed_values": [
+              "Yes",
+              "No"
+            ]
+          },
+          "certification_license": {
+            "label": "Certification/License",
+            "column": "BH",
+            "mandatory": false,
+            "allowed_values": [
+              "Yes",
+              "No"
+            ]
+          },
+          "certificate_registration_no": {
+            "label": "Certificate/Registration No.",
+            "column": "BI",
+            "mandatory": false,
+            "input_type": "free_text_or_unvalidated"
+          },
+          "player_type": {
+            "label": "Player Type",
+            "column": "BJ",
+            "mandatory": false,
+            "input_type": "free_text_or_unvalidated"
+          },
+          "non_halal_ingredients": {
+            "label": "Non Halal Ingredients",
+            "column": "BL",
+            "mandatory": false,
+            "allowed_values": [
+              "Contains Non Halal ingredients",
+              "Not contains Non Halal ingredients"
+            ]
+          }
+        },
+        "hsa_relevant": false
+      },
+      {
+        "path": "Fashion Accessories > Hair Accessories > Others",
+        "category_id": 100150,
+        "verified": false,
+        "verification_note": "실제 쇼피 대량업로드 템플릿(2026-07-16 다운로드, HiddenCatProps/Attribute value mapping/Pre-order DTS Range 시트)에서 파싱됨. 등록 자체는 아직 실증 안 됨 - 카테고리ID/DTS/속성은 신뢰 가능하나 첫 등록 시 결과 확인 필요.",
+        "days_to_ship": {
+          "allowed": [
+            [
+              1,
+              1
+            ],
+            [
+              4,
+              10
+            ]
+          ],
+          "banned": [
+            2,
+            3
+          ]
+        },
+        "attributes": {
+          "gender": {
+            "label": "Gender",
+            "column": "AF",
+            "mandatory": true,
+            "allowed_values": [
+              "Female",
+              "Male",
+              "Unisex"
+            ]
+          },
+          "region_of_origin": {
+            "label": "Region of Origin",
+            "column": "AG",
+            "mandatory": false,
+            "allowed_values": [
+              "Japan",
+              "Mainland China",
+              "Korea",
+              "Indonesia",
+              "Others",
+              "America",
+              "Taiwan",
+              "Thailand",
+              "Vietnam",
+              "India",
+              "Bangladesh",
+              "Brasil",
+              "Colombia",
+              "Chile",
+              "Argentina",
+              "Mexico"
+            ]
+          },
+          "goods_type": {
+            "label": "Goods Type",
+            "column": "AH",
+            "mandatory": false,
+            "allowed_values": [
+              "Collectibles",
+              "Designed Goods",
+              "Others"
+            ]
+          },
+          "material": {
+            "label": "Material",
+            "column": "AI",
+            "mandatory": false,
+            "input_type": "free_text_or_unvalidated"
+          },
+          "bsmi": {
+            "label": "BSMI",
+            "column": "AO",
+            "mandatory": false,
+            "input_type": "free_text_or_unvalidated"
+          },
+          "ncc": {
+            "label": "NCC",
+            "column": "AP",
+            "mandatory": false,
+            "input_type": "free_text_or_unvalidated"
+          },
+          "quantity": {
+            "label": "Quantity",
+            "column": "AQ",
+            "mandatory": false,
+            "input_type": "free_text_or_unvalidated"
+          },
+          "indication": {
+            "label": "indication",
+            "column": "AR",
+            "mandatory": false,
+            "input_type": "free_text_or_unvalidated"
+          },
+          "manufacturer_trader_name": {
+            "label": "Manufacturer/trader name",
+            "column": "AS",
+            "mandatory": false,
+            "allowed_values": [
+              "Updating"
+            ]
+          },
+          "manufacturer_trader_address": {
+            "label": "Manufacturer/trader address",
+            "column": "AT",
+            "mandatory": false,
+            "allowed_values": [
+              "Updating"
+            ]
+          },
+          "custom_product": {
+            "label": "Custom Product",
+            "column": "AU",
+            "mandatory": false,
+            "allowed_values": [
+              "Yes",
+              "No"
+            ]
+          },
+          "certificate_no_halal": {
+            "label": "Certificate No. (Halal)",
+            "column": "AV",
+            "mandatory": false,
+            "input_type": "free_text_or_unvalidated"
+          },
+          "na": {
+            "label": "NA",
+            "column": "AW",
+            "mandatory": false,
+            "allowed_values": [
+              "Yes"
+            ]
+          },
+          "care_instructions": {
+            "label": "Care Instructions",
+            "column": "AX",
+            "mandatory": false,
+            "input_type": "free_text_or_unvalidated"
+          },
+          "model": {
+            "label": "Model",
+            "column": "BF",
+            "mandatory": false,
+            "input_type": "free_text_or_unvalidated"
+          },
+          "halal_certificates": {
+            "label": "HALAL Certificates",
+            "column": "BG",
+            "mandatory": false,
+            "allowed_values": [
+              "Yes",
+              "No"
+            ]
+          },
+          "certification_license": {
+            "label": "Certification/License",
+            "column": "BH",
+            "mandatory": false,
+            "allowed_values": [
+              "Yes",
+              "No"
+            ]
+          },
+          "certificate_registration_no": {
+            "label": "Certificate/Registration No.",
+            "column": "BI",
+            "mandatory": false,
+            "input_type": "free_text_or_unvalidated"
+          },
+          "player_type": {
+            "label": "Player Type",
+            "column": "BJ",
+            "mandatory": false,
+            "input_type": "free_text_or_unvalidated"
+          },
+          "size": {
+            "label": "Size",
+            "column": "BK",
+            "mandatory": false,
+            "input_type": "free_text_or_unvalidated"
+          },
+          "non_halal_ingredients": {
+            "label": "Non Halal Ingredients",
+            "column": "BL",
+            "mandatory": false,
+            "allowed_values": [
+              "Contains Non Halal ingredients",
+              "Not contains Non Halal ingredients"
+            ]
+          }
+        },
+        "hsa_relevant": false
       },
       {
         "path": "Beauty > Skincare > Face Mask & Packs",
@@ -60,25 +1932,50 @@
         "verified_on": "2026-07-13",
         "verification_note": "대량등록 3/3 성공. 단 SG는 HSA 규제로 Publish 불가 (country_rules.json restricted_categories.health_beauty 참조) → Global SKU만 유지, MY/PH 이관 대상",
         "days_to_ship": {
-          "allowed": [[1, 1], [4, 10]],
-          "banned": [3],
+          "allowed": [
+            [
+              1,
+              1
+            ],
+            [
+              4,
+              10
+            ]
+          ],
+          "banned": [
+            3
+          ],
           "note": "DTS 3은 Pre-order DTS Range 시트에서 금지값으로 확인됨 (Day 1 실수 이력: 100664/DTS 3으로 잘못 등록했다가 정정)"
         },
         "attributes": {
           "shelf_life": {
             "column": "AE",
             "mandatory": "conditional_mandatory_but_effectively_required",
-            "allowed_values": ["1 Month", "2 Months", "3 Months", "6 Months", "12 Months", "24 Months"],
+            "allowed_values": [
+              "1 Month",
+              "2 Months",
+              "3 Months",
+              "6 Months",
+              "12 Months",
+              "24 Months"
+            ],
             "note": "Conditional Mandatory이지만 실질적으로 필수. 누락 시 반려됨 (Day 1 실수 이력)"
           },
           "mask_type": {
             "column": "AR",
-            "allowed_values": ["Cream", "Mud", "Regular", "Others"],
+            "allowed_values": [
+              "Cream",
+              "Mud",
+              "Regular",
+              "Others"
+            ],
             "note": "'Sheet Mask'는 허용값에 없음 (Day 1 실수: Sheet Mask 선택 → Regular Mask로 정정)"
           },
           "region_of_origin": {
             "column": "AN",
-            "allowed_values": ["Korea"],
+            "allowed_values": [
+              "Korea"
+            ],
             "note": "'South Korea'가 아니라 'Korea'로 정확히 입력해야 함"
           }
         },

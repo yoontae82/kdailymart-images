@@ -64,22 +64,29 @@ def build_mass_upload_row(
     copy: LocalizedCopy, images: ProcessedImageSet, margin: MarginResult,
     category_id: int, country: Country, sku: str, stock: int, days_to_ship: int,
     weight_kg: float, dimensions_cm: tuple[float, float, float],
-    attributes: dict[str, str], parent_sku: str | None = None,
+    attributes: dict[str, str], parent_sku: str | None = None, brand: str = "No Brand",
     category_master: dict | None = None,
 ) -> dict[str, str]:
     """category_master.json의 컬럼 규칙에 맞춰 Mass Upload 1행 데이터를 조립한다.
     반환값은 {컬럼문자: 값} 형태이며 generate_mass_upload_file()에 그대로 넘기면 된다.
 
-    카테고리ID/DTS/속성값이 category_master.json 허용 범위를 벗어나면 ValueError를 던진다 -
-    이 검증을 build 단계에서 하는 이유는, 형식이 틀린 파일이 만들어진 뒤에야(즉 사람이 쇼피에
-    업로드해본 뒤에야) 오류를 알게 되는 걸 막기 위해서다.
+    카테고리ID/DTS/속성값이 category_master.json 허용 범위를 벗어나거나 mandatory 속성이
+    빠지면 ValueError를 던진다 - 이 검증을 build 단계에서 하는 이유는, 형식이 틀린 파일이 만들어진
+    뒤에야(즉 사람이 쇼피에 업로드해본 뒤에야) 오류를 알게 되는 걸 막기 위해서다.
+
+    ⚠️ Global SKU Price(K 컬럼, margin.cost_price_krw)의 통화/공식은 아직 확정이 안 됐다.
+    실제 템플릿 가이드 문구는 "Global SKU Price를 RMB로 입력, Shop SKU Price = Global SKU Price *
+    Marketplace Exchange Rate * Market Price Adjustment Ratio + Hidden Price"라고 되어 있는데,
+    이 프로젝트의 다른 문서(운영 룰북 v2)는 KRW 기준/Adjustment Rate 단순 공식을 전제로 한다.
+    실제 값을 넣기 전에 반드시 사람이 쇼피 셀러센터에서 이 통화/공식을 재확인해야 한다 -
+    README의 "가격 컬럼(K) 통화/공식 확인 필요" 항목 참고.
 
     TODO(정식 운영 전 필요 사항):
-    - category_master.json에 아직 검증된 카테고리가 SG 2개뿐이다. 새 카테고리를 다룰 때마다
-      실제 쇼피 템플릿(HiddenCatProps/Pre-order DTS Range/Attribute value mapping/Template 4행)을
-      파싱해서 채워야 이 함수가 그 카테고리에 대해 동작한다.
+    - 위 K컬럼 통화/공식 확인
     - Parent SKU(D 컬럼)를 언제 채우고 언제 비워두는지 규칙이 아직 없음 (변형상품이 있는 경우에만
       필요한 것으로 보이나 룰북에 명확한 기준이 없어 추가 확인 필요)
+    - Brand(AD 컬럼)는 실제 브랜드ID 목록(Brand 시트)이 없어 기본값 "No Brand"로 두고 있음 -
+      브랜드 등록이 필요해지면 실제 Brand ID 목록을 받아 검증 로직 추가
     """
     master = category_master if category_master is not None else load_category_master()
     entry = _find_category(master, country, category_id)
@@ -108,13 +115,15 @@ def build_mass_upload_row(
         "width_cm": str(dimensions_cm[1]),
         "height_cm": str(dimensions_cm[2]),
         "days_to_ship": str(days_to_ship),
+        "brand": brand,
     }
     for col, field in fixed.items():
         if col.startswith("$"):
             continue
         if field in values_by_field:
             row[col] = values_by_field[field]
-    for i, col in enumerate(["O", "P", "Q", "R", "S"]):
+    image_columns = ["O", "P", "Q", "R", "S", "T", "U", "V"]  # Item Image 1~8
+    for i, col in enumerate(image_columns):
         if i < len(images.item_image_urls):
             row[col] = images.item_image_urls[i]
 
@@ -122,39 +131,95 @@ def build_mass_upload_row(
         attr_rule = entry["attributes"].get(attr_name)
         if attr_rule is None:
             raise ValueError(f"'{attr_name}'은 이 카테고리에 정의되지 않은 속성입니다.")
-        if value not in attr_rule["allowed_values"]:
-            raise ValueError(
-                f"'{attr_name}'의 값 '{value}'는 허용값({attr_rule['allowed_values']})에 없습니다."
-            )
+        allowed_values = attr_rule.get("allowed_values")
+        if allowed_values is not None and value not in allowed_values:
+            raise ValueError(f"'{attr_name}'의 값 '{value}'는 허용값({allowed_values})에 없습니다.")
         row[attr_rule["column"]] = value
+
+    missing_mandatory = [
+        name for name, rule in entry["attributes"].items()
+        if rule.get("mandatory") and name not in attributes
+    ]
+    if missing_mandatory:
+        raise ValueError(f"이 카테고리의 필수(mandatory) 속성이 빠졌습니다: {missing_mandatory}")
 
     return row
 
 
+def _load_workbook_tolerant(template_path: Path):
+    """openpyxl로 워크북을 열되, 실제 쇼피 템플릿에서 확인된 손상된 sheetView 속성
+    (activePane="bottom_left" - OOXML 표준값 "bottomLeft"가 아니라 openpyxl이 거부함)이
+    있으면 자동으로 고쳐서 연다. 데이터는 전혀 건드리지 않고 view 상태값 표기만 정규화한다.
+    """
+    import openpyxl
+
+    try:
+        return openpyxl.load_workbook(template_path)
+    except ValueError as e:
+        cause_text = f"{e}\n{e.__cause__}"
+        if "bottomLeft" not in cause_text and "topLeft" not in cause_text:
+            raise
+        import re
+        import tempfile
+        import zipfile
+
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            extract_dir = Path(tmp_dir) / "extracted"
+            with zipfile.ZipFile(template_path) as zf:
+                zf.extractall(extract_dir)
+
+            fixed_any = False
+            for sheet_xml in (extract_dir / "xl" / "worksheets").glob("*.xml"):
+                text = sheet_xml.read_text(encoding="utf-8")
+                new_text = re.sub(r'activePane="[a-zA-Z_]+"', lambda m: (
+                    m.group(0).replace("bottom_left", "bottomLeft")
+                    .replace("bottom_right", "bottomRight")
+                    .replace("top_left", "topLeft")
+                    .replace("top_right", "topRight")
+                ), text)
+                if new_text != text:
+                    sheet_xml.write_text(new_text, encoding="utf-8")
+                    fixed_any = True
+            if not fixed_any:
+                raise
+
+            fixed_path = Path(tmp_dir) / "fixed.xlsx"
+            with zipfile.ZipFile(fixed_path, "w", zipfile.ZIP_DEFLATED) as zf:
+                for file_path in extract_dir.rglob("*"):
+                    if file_path.is_file():
+                        zf.write(file_path, file_path.relative_to(extract_dir))
+
+            wb = openpyxl.load_workbook(fixed_path)
+            # 고친 파일은 임시 디렉토리와 함께 사라지므로, 원본 대신 이 워크북 객체를 그대로 쓴다.
+            return wb
+
+
 def generate_mass_upload_file(
     rows: list[dict[str, str]], output_path: Path, template_path: Path | None = None,
+    sheet_name: str = "Template", data_start_row: int = 7,
 ) -> Path:
     """조립된 행들을 실제 .xlsx 파일로 저장한다. 로그인 자동화 없이 사람이 이 파일을 쇼피
     셀러센터에서 직접 "대용량업로드"로 첨부하는 Phase 1 워크플로우의 산출물이다.
 
     template_path를 주면 실제 쇼피 대용량업로드 템플릿 파일을 열어 그 위에 값만 채운다
-    (권장 - 쇼피가 기대하는 다른 시트(HiddenCatProps 등)와 헤더가 그대로 보존된다).
+    (권장 - 쇼피가 기대하는 다른 시트(HiddenCatProps 등)와 헤더가 그대로 보존된다). 실제 템플릿은
+    "Template" 시트의 1~6행이 내부 식별자/헤더/가이드이고, 7행부터 실제 상품 데이터가 시작된다
+    (Shopee_mass_upload_global_sku_20260716_advanced_template.xlsx로 확인됨).
     template_path가 없으면 컬럼 문자만으로 새 파일을 만드는데, 이건 로직 검증용 데모일 뿐이며
     실제 쇼피 시트 구성과 다를 수 있어 이 상태로 바로 업로드하면 안 된다.
 
     TODO(정식 운영 전 필요 사항):
-    - 실제 쇼피 대용량업로드 템플릿 파일(.xlsx)을 셀러센터에서 다운받아 rulebook/ 밑에 보관하고,
-      이 함수가 항상 template_path를 받아 그 위에 채우도록 바꿀 것 (데모 경로는 검증 후 제거)
-    - 템플릿 안에서 실제 데이터 시트 이름/시작 행 번호를 확인해서 반영 (현재는 첫 번째 시트,
-      2행부터 데이터 시작으로 가정)
+    - 지금은 매번 template_path를 명시적으로 넘겨야 한다. 실제 운영에 들어가면 이 템플릿 파일을
+      rulebook/ 밑에 고정 보관하고 기본값으로 참조하도록 바꿀 것 (템플릿이 쇼피 쪽에서 갱신되면
+      다시 받아서 교체해야 함 - 카테고리 트리/속성이 바뀔 수 있음)
+    - 여러 행을 이어 붙일 때 기존 "Upload sample" 시트의 예시 행과 겹치지 않는지 확인 필요
     """
-    import openpyxl
-
     if template_path is not None:
-        wb = openpyxl.load_workbook(template_path)
-        ws = wb.active
-        start_row = ws.max_row + 1
+        wb = _load_workbook_tolerant(template_path)
+        ws = wb[sheet_name] if sheet_name in wb.sheetnames else wb.active
+        start_row = max(ws.max_row + 1, data_start_row)
     else:
+        import openpyxl
         wb = openpyxl.Workbook()
         ws = wb.active
         ws.title = "DEMO - not a real Shopee template"
